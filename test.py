@@ -21,8 +21,8 @@ upbit = pyupbit.Upbit(os.getenv("UPBIT_ACCESS_KEY"), os.getenv("UPBIT_SECRET_KEY
 # print(upbit.get_balance("KRW-XRP"))     # KRW-XRP 조회
 # print(upbit.get_balance("KRW"))         # 보유 현금 조회
 #def fetch_and_prepare_data():
-df_daily = pyupbit.get_ohlcv("KRW-BTC", "day", count=400)
-df_hourly = pyupbit.get_ohlcv("KRW-BTC", interval="minute60", count=400)
+df_daily = pyupbit.get_ohlcv("KRW-BTC", "day", count=290)
+df_hourly = pyupbit.get_ohlcv("KRW-BTC", interval="minute60", count=290)
 
 # Define a helper function to add indicators
 def add_indicators(df):
