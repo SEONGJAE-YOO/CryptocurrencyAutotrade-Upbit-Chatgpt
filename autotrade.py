@@ -33,8 +33,8 @@ def get_current_status():
 
 def fetch_and_prepare_data():
     # Fetch data
-    df_daily = pyupbit.get_ohlcv("KRW-BTC", "day", count=400)
-    df_hourly = pyupbit.get_ohlcv("KRW-BTC", interval="minute60", count=400)
+    df_daily = pyupbit.get_ohlcv("KRW-BTC", "day", count=290)
+    df_hourly = pyupbit.get_ohlcv("KRW-BTC", interval="minute60", count=290)
 
     # Define a helper function to add indicators
     def add_indicators(df):
