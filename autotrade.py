@@ -55,8 +55,10 @@ def fetch_and_prepare_data():
         df['EMA_120'] = ta.ema(df['close'], length=120)
 
         # RSI
+        df['RSI_7'] = ta.rsi(df['close'], length=7)
         df['RSI_14'] = ta.rsi(df['close'], length=14)
-
+        df['RSI_21'] = ta.rsi(df['close'], length=21)
+        
         # Stochastic Oscillator
         stoch = ta.stoch(df['high'], df['low'], df['close'], k=14, d=3, smooth_k=3)
         df = df.join(stoch)
