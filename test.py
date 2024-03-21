@@ -21,8 +21,8 @@ upbit = pyupbit.Upbit(os.getenv("UPBIT_ACCESS_KEY"), os.getenv("UPBIT_SECRET_KEY
 # print(upbit.get_balance("KRW-XRP"))     # KRW-XRP 조회
 # print(upbit.get_balance("KRW"))         # 보유 현금 조회
 #def fetch_and_prepare_data():
-df_daily = pyupbit.get_ohlcv("KRW-BTC", "day", count=120)
-df_hourly = pyupbit.get_ohlcv("KRW-BTC", interval="minute60", count=120)
+df_daily = pyupbit.get_ohlcv("KRW-BTC", "day", count=400)
+df_hourly = pyupbit.get_ohlcv("KRW-BTC", interval="minute60", count=400)
 
 # Define a helper function to add indicators
 def add_indicators(df):
@@ -41,6 +41,18 @@ def add_indicators(df):
 
     df['SMA_120'] = ta.sma(df['close'], length=120)
     df['EMA_120'] = ta.ema(df['close'], length=120)
+
+    # Calculate short and long-term moving averages
+    df['SMA_50'] = ta.sma(df['close'], length=50)
+    df['SMA_200'] = ta.sma(df['close'], length=200)
+    # Generate buy/sell signals based on the crossover
+    df['Signal'] = 0  # Initialize signal column
+    
+    # When SMA_50 crosses above SMA_200, set signal to 1 (Buy)
+    df.loc[df['SMA_50'] > df['SMA_200'], 'Signal'] = 1
+    
+    # When SMA_50 crosses below SMA_200, set signal to -1 (Sell)
+    df.loc[df['SMA_50'] < df['SMA_200'], 'Signal'] = -1
 
     # RSI
     df['RSI_7'] = ta.rsi(df['close'], length=7)
