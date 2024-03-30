@@ -192,6 +192,27 @@ def fetch_and_prepare_data():
     # SUI
     df_minute30_SUI = pyupbit.get_ohlcv("KRW-SUI", interval="minute30",count=120)
     time.sleep(1)
+    # AQT
+    # CBK
+    # FCT2
+    # JST
+    # UPP
+    # STRIKE
+    # MOC
+    # TFUEL
+
+    # TT
+    # KNC
+    # CRO
+    # META
+    # ELF
+    # AHT
+    # BAT
+    # SBD
+    # MED
+    # AAVE
+    # XTZ
+    # TON
     # 
     
     
@@ -372,7 +393,7 @@ def get_instructions(file_path):
         print("An error occurred while reading the file:", e)
 
 def analyze_data_with_gpt4(data_json,index_value):
-    instructions_path = "autotrade_version5.md"
+    instructions_path = "autotrade_version6.md"
     try:
         instructions = get_instructions(instructions_path)
         if not instructions:
@@ -417,7 +438,7 @@ def execute_sell(index_value):
     except Exception as e:
         print(f"Failed to execute sell order: {e}")
 
-def make_decision_and_execute(data_json, index_value):
+def make_decision_and_execute():
     print("Making decision and executing...")
     data_json, index_value = fetch_and_prepare_data()
     print(data_json)
@@ -434,18 +455,22 @@ def make_decision_and_execute(data_json, index_value):
 
 
 def make_decision_and_execute_schedule():
-    print("Making decision and executing...")
-    data_json_v2, index_value_v2 = fetch_and_prepare_data()
-    print(data_json_v2)
-    advice = analyze_data_with_gpt4(data_json_v2,index_value_v2)
+    krw = upbit.get_balance("KRW")
 
     try:
-        decision = json.loads(advice)
-        print(decision)
-        if decision.get('decision') == "buy":
-            execute_buy(index_value_v2)
-            index_value = index_value_v2
-        return data_json_v2, index_value
+        if krw > 5000:
+            print("Making decision and executing...")
+            data_json_v2, index_value_v2 = fetch_and_prepare_data()
+            print(data_json_v2)
+            advice = analyze_data_with_gpt4(data_json_v2,index_value_v2)
+            decision = json.loads(advice)
+            print(decision)
+            if decision.get('decision') == "buy":
+                execute_buy(index_value_v2)
+                index_value = index_value_v2
+            return data_json_v2, index_value
+        else:
+            print(f"hold")
     except Exception as e:
         print(f"Failed to parse the advice as JSON: {e}")
 
@@ -468,9 +493,7 @@ def make_decision_and_execute_sell(index_value):
         print(f"Failed to parse the advice as JSON: {e}")
 
 if __name__ == "__main__":
-    data_json=None
-    index_value=None
-    data_json, index_value = make_decision_and_execute(data_json,index_value)
+    data_json, index_value = make_decision_and_execute()
     schedule.every(30).minutes.do(make_decision_and_execute_sell, index_value=index_value)
     schedule.every(32).minutes.do(make_decision_and_execute_schedule)
 
