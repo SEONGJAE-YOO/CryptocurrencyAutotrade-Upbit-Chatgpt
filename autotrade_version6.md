@@ -79,6 +79,10 @@ Example structure for JSON Data 2 (Current Investment State) is as follows:
 
 ## Examples
 ### Example Instruction for Making a Decision
+
+# "In the 'Example Instruction for Making a Decision', consider multiple 'reasons' to maximize returns through precise and cautious buying and selling. Diversify your considerations to ensure comprehensive decision-making and optimal outcomes."
+
+
 After analyzing JSON Data 1, you observe that the RSI_14 is above 70, indicating overbought conditions, and the price is consistently hitting the upper Bollinger Band. Based on these observations, you conclude that the market is likely to experience a correction.
 Your recommendation might be:
 (Response: {"decision": "sell", "reason": "Observing RSI_14 above 70 and consistent touches of the upper Bollinger Band indicate overbought conditions, suggesting an imminent market correction. Selling now is recommended to secure current gains."})
