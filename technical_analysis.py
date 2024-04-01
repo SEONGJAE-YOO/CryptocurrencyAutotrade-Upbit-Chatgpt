@@ -1,6 +1,6 @@
 import pandas_ta as ta
 
-# Define a helper function to add indicators
+# Define a helper function to add indicators  
 def add_indicators(df):
     # Moving Averages
     df['SMA_5'] = ta.sma(df['close'], length=5)
@@ -66,5 +66,21 @@ def add_indicators(df):
     result_df = ta.squeeze_pro(df["high"], df["low"], df["close"])
     for column in result_df.columns:
         df[column] = result_df[column]
+
+    return df
+
+#####################################################################################
+# autotrade_version7.py 에서 사용됨
+
+def add_indicators_version2(df):
+    df = add_indicators(df)
+    FISHT = ta.fisher(df["high"],df["low"]) 
+    df = df.join(FISHT)
+    ADX = ta.adx(df["high"],df["low"],df["close"])
+    df = df.join(ADX)
+    AMAT_df = ta.amat(df["close"])
+    for column in AMAT_df.columns:
+        if "AMATe_SR_8_21_2" in column:
+            df = df.join(AMAT_df[column])
 
     return df
