@@ -449,12 +449,15 @@ def make_decision_and_execute():
         print(decision)
         if decision.get('decision') == "buy":
             execute_buy(index_value)
-        return data_json, index_value
+            return index_value
     except Exception as e:
         print(f"Failed to parse the advice as JSON: {e}")
 
 
 def make_decision_and_execute_schedule():
+    
+    global index_value
+    # index_value = None
     krw = upbit.get_balance("KRW")
 
     try:
@@ -468,34 +471,47 @@ def make_decision_and_execute_schedule():
             if decision.get('decision') == "buy":
                 execute_buy(index_value_v2)
                 index_value = index_value_v2
-            return data_json_v2, index_value
+                return index_value
+            
         else:
-            print(f"hold")
+            print(f"make_decision_and_execute_sell....")
+            make_decision_and_execute_sell(index_value)
     except Exception as e:
         print(f"Failed to parse the advice as JSON: {e}")
 
 def make_decision_and_execute_sell(index_value):
-    print("Making decision and executing...")
-    df_minute30_index_value = pyupbit.get_ohlcv(index_value, interval="minute30",count=120)
-    df_minute30_index_value = add_indicators(df_minute30_index_value)
-    df_minute30_index_value_tail = df_minute30_index_value.tail(n=1)
-    sell_data = df_minute30_index_value_tail.to_json(orient='split')
-
-    advice = analyze_data_with_gpt4(sell_data,index_value)
-
+    
     try:
-        decision = json.loads(advice)
-        print(decision)
-        if decision.get('decision') == "sell":
-            execute_sell(index_value)
+        if isinstance(index_value, str): 
+            print("Making decision and executing...")
+            df_minute30_index_value = pyupbit.get_ohlcv(index_value, interval="minute30",count=120)
+            df_minute30_index_value = add_indicators(df_minute30_index_value)
+            df_minute30_index_value_tail = df_minute30_index_value.tail(n=1)
+            sell_data = df_minute30_index_value_tail.to_json(orient='split')
 
+            advice = analyze_data_with_gpt4(sell_data,index_value)
+            decision = json.loads(advice)
+            print(decision)
+            if decision.get('decision') == "sell":
+                execute_sell(index_value)
+                index_value = None
+                return index_value
     except Exception as e:
         print(f"Failed to parse the advice as JSON: {e}")
 
 if __name__ == "__main__":
-    data_json, index_value = make_decision_and_execute()
-    schedule.every(30).minutes.do(make_decision_and_execute_sell, index_value=index_value)
-    schedule.every(32).minutes.do(make_decision_and_execute_schedule)
+    #index_value = make_decision_and_execute()
+    #schedule.every(2).minutes.do(make_decision_and_execute_sell)
+    '''
+    매 시간 정각에 make_decision_and_execute_schedule 함수가 실행되며, 매 시간 30분에 make_decision_and_execute_sell 함수가 실행됩니다. 그리고 while 루프를 사용하여 스케줄러가 계속 실행되도록 합니다.
+    '''
+    #import functools
+    #index_value = None
+    
+    schedule.every().hour.at(":00").do(make_decision_and_execute_schedule)  
+    #schedule.every().hour.at(":30").do(functools.partial(make_decision_and_execute_sell, index_value))
+
+
 
 
     while True:
