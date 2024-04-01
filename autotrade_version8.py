@@ -455,12 +455,28 @@ def fetch_and_prepare_data():
                             "KRW-XTZ", "KRW-TON"
                             ])
     #  EMA > SMA
-    combined_df_sort = combined_df[(combined_df['EMA_10'] > combined_df['SMA_10'])]
+    # 5일 sma > 20일 sma > (60일 sma & 120일 sma ) -> 골든크로스 전략
+    combined_df_sma_5_20 = combined_df[combined_df['SMA_5'] > combined_df['SMA_20']]
+    combined_df_sma_5_60 =  combined_df_sma_5_20[combined_df_sma_5_20['SMA_5'] > combined_df_sma_5_20['SMA_60']]
+    combined_df_sma_5_120 = combined_df_sma_5_60[combined_df_sma_5_60['SMA_5'] > combined_df_sma_5_60['SMA_120']]
+ 
+    combined_df_sort = combined_df_sma_5_120[(combined_df_sma_5_120['EMA_10'] > combined_df_sma_5_120['SMA_10'])]
     combined_df_sort_v2 = combined_df_sort[(combined_df_sort['EMA_5'] > combined_df_sort['SMA_5'])]
     if len(combined_df_sort_v2) != 0:
         sorted_value_df = combined_df_sort_v2.sort_values(by='value', ascending=True)
     else:
-        sorted_value_df = combined_df_sort.sort_values(by='value', ascending=True)
+        if len(combined_df_sort) != 0:
+            sorted_value_df = combined_df_sort.sort_values(by='value', ascending=True)
+        else:
+            sorted_value_df = combined_df_sma_5_120.sort_values(by='value', ascending=True)
+            if len(combined_df_sma_5_120) != 0:
+                sorted_value_df = combined_df_sma_5_120.sort_values(by='value', ascending=True)
+            else:
+                sorted_value_df = combined_df_sma_5_60.sort_values(by='value', ascending=True)
+                if len(combined_df_sma_5_60) != 0:
+                    sorted_value_df = combined_df_sma_5_60.sort_values(by='value', ascending=True)
+                else:
+                    sorted_value_df = combined_df_sma_5_20.sort_values(by='value', ascending=True)
     #print(combined_df_sort_v2)
     #sorted_df = combined_df.sort_values(by='volume', ascending=True)
     
@@ -580,7 +596,7 @@ def make_decision_and_execute_schedule():
             print(f"make_decision_and_execute_sell....")
             make_decision_and_execute_sell(index_value)
     except Exception as e:
-        print(f"Failed to parse the advice as JSON: {e}")
+        print(f"Failed to parse the advice as JSON: {e}")    
 
 def make_decision_and_execute_sell(index_value):
     
@@ -634,9 +650,6 @@ if __name__ == "__main__":
     
     schedule.every().hour.at(":00").do(make_decision_and_execute_schedule)  
     #schedule.every().hour.at(":30").do(functools.partial(make_decision_and_execute_sell, index_value))
-
-
-
 
     while True:
         schedule.run_pending()
