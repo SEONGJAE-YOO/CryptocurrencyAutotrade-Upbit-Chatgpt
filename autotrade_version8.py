@@ -483,6 +483,7 @@ def fetch_and_prepare_data():
     
     result = sorted_value_df.tail(n=1)
     combined_data = result.to_json(orient='split')
+    #combined_data_dumps = json.dumps(combined_data)
     #print(combined_data)
     # JSON 문자열을 파이썬 딕셔너리로 변환
     data_json = json.loads(combined_data)
@@ -527,13 +528,13 @@ def analyze_data_with_gpt4(data_json,last_decisions,fear_and_greed,current_statu
         return None
     
 
-def execute_buy(index_value,percentage):
-    print(f"Attempting to buy {index_value} with a percentage of KRW balance...")
+def execute_buy(index_value_v2,percentage):
+    print(f"Attempting to buy {index_value_v2} with a percentage of KRW balance...")
     try:
         krw_balance = upbit.get_balance("KRW")
         amount_to_invest = krw_balance * (percentage / 100)
         if amount_to_invest > 5000:  # Ensure the order is above the minimum threshold
-            result = upbit.buy_market_order(index_value, amount_to_invest * 0.9995)  # Adjust for fees
+            result = upbit.buy_market_order(index_value_v2, amount_to_invest * 0.9995)  # Adjust for fees
             print("Buy order successful:", result)
     except Exception as e:
         print(f"Failed to execute buy order: {e}")
@@ -570,11 +571,14 @@ def make_decision_and_execute():
 
 def make_decision_and_execute_schedule():
     
-    global index_value
-    # index_value = None
-    krw = upbit.get_balance("KRW")
-
     try:
+        global index_value
+        # index_value = None
+        krw = upbit.get_balance("KRW")
+        max_retries = 5
+        retry_delay_seconds = 5
+        decision = None
+
         if krw > 5000:
             print("Making decision and executing...")
             data_json_v2, index_value_v2 = fetch_and_prepare_data()
@@ -582,9 +586,20 @@ def make_decision_and_execute_schedule():
             last_decisions = fetch_last_decisions()
             fear_and_greed = fetch_fear_and_greed_index(limit=30)
             current_status = get_current_status(index_value_v2)
-            advice = analyze_data_with_gpt4(data_json_v2,last_decisions,fear_and_greed,current_status)
-            decision = json.loads(advice)
-            print(decision)
+            for attempt in range(max_retries):
+                try:
+                    advice = analyze_data_with_gpt4(data_json_v2,last_decisions,fear_and_greed,current_status)
+                    decision = json.loads(advice)
+                    print(decision)
+                    break
+                except json.JSONDecodeError as e:
+                    print(f"JSON parsing failed: {e}. Retrying in {retry_delay_seconds} seconds...")
+                    time.sleep(retry_delay_seconds)
+                    print(f"Attempt {attempt + 2} of {max_retries}")
+            if not decision:
+                print("Failed to make a decision after maximum retries.")
+                return
+
             percentage = decision.get('percentage', 100)
             if decision.get('decision') == "buy":
                 execute_buy(index_value_v2,percentage)
@@ -647,7 +662,7 @@ def fetch_fear_and_greed_index(limit=1, date_format=''):
 
 if __name__ == "__main__":
     initialize_db()
-    
+    #schedule.every(1).minutes.do(make_decision_and_execute_schedule)
     schedule.every().hour.at(":00").do(make_decision_and_execute_schedule)  
     #schedule.every().hour.at(":30").do(functools.partial(make_decision_and_execute_sell, index_value))
 
@@ -658,4 +673,18 @@ if __name__ == "__main__":
 
 # #1초마다 make_decision_and_execute을 동작시키다가 "22:21"이 되면 프로그램 종료
 # schedule.every(1).seconds.do(make_decision_and_execute)
-# schedule.every().day.at("22:21").do(exit)
+# schedule.every().day.at("22:21").do(exit)  
+        
+"""
+What Is the Crypto Fear and Greed Index? 
+
+0-24: Extreme Fear (indicating potential buying opportunities as market participants might be too worried)
+
+25-49: Fear (suggesting caution among investors)
+
+50: Neutral (market sentiment is balanced between fear and greed)
+
+51-74: Greed (implying increasing market confidence and investment risk)
+
+75-100: Extreme Greed (a warning signal that the market may be overvalued and due for a correction)
+"""
