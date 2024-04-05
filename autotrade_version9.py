@@ -510,7 +510,7 @@ def get_instructions(file_path):
         print("An error occurred while reading the file:", e)
 
 def analyze_data_with_gpt4(data_json,last_decisions,fear_and_greed,current_status):
-    instructions_path = "autotrade_version8.md"
+    instructions_path = "autotrade_version9.md"
     try:
         instructions = get_instructions(instructions_path)
         if not instructions:
