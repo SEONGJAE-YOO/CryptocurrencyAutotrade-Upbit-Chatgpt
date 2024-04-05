@@ -455,39 +455,52 @@ def fetch_and_prepare_data():
                             "KRW-XTZ", "KRW-TON"
                             ])
     #  EMA > SMA
-    
-    combined_df_sort_v2 = combined_df[combined_df['EMA_10'] > combined_df['SMA_10']]
-    combined_df_sort_v3 = combined_df_sort_v2[combined_df_sort_v2['EMA_5'] > combined_df_sort_v2['SMA_5']]
-    # 5일 sma > 20일 sma > (60일 sma & 120일 sma ) -> 골든크로스 전략
-    combined_df_sma_5_120 = combined_df_sort_v3[combined_df_sort_v3['SMA_5'] > combined_df_sort_v3['SMA_120']]
-    combined_df_sma_5_60 =  combined_df_sma_5_120[combined_df_sma_5_120['SMA_5'] > combined_df_sma_5_120['SMA_60']]
-    combined_df_sma_5_20 = combined_df_sma_5_60[combined_df_sma_5_60['SMA_5'] > combined_df_sma_5_60['SMA_20']]
+    combined_df_sma_5_20 = combined_df[combined_df['SMA_5'] > combined_df['SMA_20']]
+    combined_df_sma_5_60 =  combined_df_sma_5_20[combined_df_sma_5_20['SMA_5'] > combined_df_sma_5_20['SMA_60']]
+    combined_df_sma_5_120 = combined_df_sma_5_60[combined_df_sma_5_60['SMA_5'] > combined_df_sma_5_60['SMA_120']]
+    combined_df_sort = combined_df_sma_5_120[(combined_df_sma_5_120['EMA_10'] > combined_df_sma_5_120['SMA_10'])]
+        
+    # "The RSI_14 has dropped below 30, suggesting the cryptocurrency pair is currently undervalued and likely to experience a price rebound. This oversold condition presents a favorable buying opportunity, anticipating a corrective rally."})
+    combined_df_RSI_7 = combined_df_sort[combined_df_sort['RSI_7'] < 40]
+    if len(combined_df_RSI_7) != 0:
+        combined_df_sort = combined_df_RSI_7
+
+    combined_df_RSI_14 = combined_df_sort[combined_df_sort['RSI_14'] < 40]
+    if len(combined_df_RSI_14) != 0:
+        combined_df_sort = combined_df_RSI_14
+
+    combined_df_RSI_21 = combined_df_sort[combined_df_sort['RSI_21'] < 40]
+    if len(combined_df_RSI_21) != 0:
+        combined_df_sort = combined_df_RSI_21    
+
+    # The Chaikin Money Flow ("cmf") indicator has surged above 0
+
+    combined_df_sort_cmf = combined_df_sort[combined_df_sort['cmf'] > 0]
+    if len(combined_df_sort) != 0:
+        combined_df_sort = combined_df_sort_cmf
+
+    combined_df_sort_v2 = combined_df_sort[(combined_df_sort['EMA_5'] > combined_df_sort['SMA_5'])]
     # when the current close price falls below the lower Donchian Channel (DCL_20_20), 
-    combined_df_DCL_20_20 = combined_df_sma_5_20[combined_df_sma_5_20['close'] < combined_df_sma_5_20['DCL_20_20']]
+    combined_df_DCL_20_20 = combined_df_sort_v2[combined_df_sort_v2['close'] < combined_df_sort_v2['DCL_20_20']]
     
- 
-
-    if len(combined_df_sort_v2) != 0:
-        sorted_value_df = combined_df_sort_v2.sort_values(by='value', ascending=True)
+    if len(combined_df_DCL_20_20) != 0:
+        sorted_value_df = combined_df_DCL_20_20.sort_values(by='value', ascending=True)
     else:
-        sorted_value_df = combined_df_sort_v3.sort_values(by='value', ascending=True)
-        if len(combined_df_sort_v3) != 0:
-            sorted_value_df = combined_df_sort_v3.sort_values(by='value', ascending=True)
+        if len(combined_df_sort_v2) != 0:
+                sorted_value_df = combined_df_sort_v2.sort_values(by='value', ascending=True)
         else:
-            sorted_value_df = combined_df_sma_5_120.sort_values(by='value', ascending=True)
-            if len(combined_df_sma_5_120) != 0:
-                sorted_value_df = combined_df_sma_5_120.sort_values(by='value', ascending=True)
+            if len(combined_df_sort) != 0:
+                sorted_value_df = combined_df_sort.sort_values(by='value', ascending=True)
             else:
-                sorted_value_df = combined_df_sma_5_60.sort_values(by='value', ascending=True)
-                if len(combined_df_sma_5_60) != 0:
-                    sorted_value_df = combined_df_sma_5_60.sort_values(by='value', ascending=True)
+                if len(combined_df_sma_5_120) != 0:
+                    sorted_value_df = combined_df_sma_5_120.sort_values(by='value', ascending=True)
                 else:
-                    sorted_value_df = combined_df_sma_5_20.sort_values(by='value', ascending=True)
-                    if len(combined_df_sma_5_20) != 0:
-                        sorted_value_df = combined_df_sma_5_20.sort_values(by='value', ascending=True)
+                    if len(combined_df_sma_5_60) != 0:
+                        sorted_value_df = combined_df_sma_5_60.sort_values(by='value', ascending=True)
                     else:
-                        sorted_value_df = combined_df_DCL_20_20.sort_values(by='value', ascending=True)
+                        sorted_value_df = combined_df_sma_5_20.sort_values(by='value', ascending=True)
 
+    
     result = sorted_value_df.tail(n=1)
     combined_data = result.to_json(orient='split')
     #combined_data_dumps = json.dumps(combined_data)
