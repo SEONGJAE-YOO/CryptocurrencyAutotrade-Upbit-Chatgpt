@@ -70,7 +70,7 @@ def add_indicators(df):
     return df
 
 #####################################################################################
-# autotrade_version7.py 에서 사용됨
+# autotrade_version8.py 에서 사용됨
 
 def add_indicators_version2(df):
     df = add_indicators(df)
@@ -83,4 +83,11 @@ def add_indicators_version2(df):
         if "AMATe_SR_8_21_2" in column:
             df = df.join(AMAT_df[column])
 
+    return df
+
+# autotrade_version9.py 에서 사용되는 기술적 분석 기능
+def add_indicators_version3(df):
+    df = add_indicators_version2(df)
+    donchian = ta.donchian(df["high"],df["low"], lower_length = 20, upper_length = 20, offset = 0)
+    df = df.join(donchian)
     return df
