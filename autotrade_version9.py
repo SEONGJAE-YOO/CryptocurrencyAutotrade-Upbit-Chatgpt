@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 import pyupbit
-import pandas as pd
+import pandas as pd  
 import pandas_ta as ta
 import json
 from openai import OpenAI
@@ -166,7 +166,7 @@ def fetch_and_prepare_data():
     time.sleep(1)
     # CELO
     df_minute240_CELO = pyupbit.get_ohlcv("KRW-CELO", interval="minute240",count=120)
-    time.sleep(1)
+    time.sleep(1)  
     # ARB
     df_minute240_ARB = pyupbit.get_ohlcv("KRW-ARB", interval="minute240",count=120)
     time.sleep(1)
@@ -250,15 +250,165 @@ def fetch_and_prepare_data():
     time.sleep(1)
     # XTZ
     df_minute240_XTZ = pyupbit.get_ohlcv("KRW-XTZ", interval="minute240",count=120)
-    time.sleep(1)
+    time.sleep(1)  
     # TON
     df_minute240_TON = pyupbit.get_ohlcv("KRW-TON", interval="minute240",count=120)
+    time.sleep(1)
+    
+    #############################3
+    # IMX
+    df_minute240_IMX = pyupbit.get_ohlcv("KRW-IMX", interval="minute240",count=120)
+    time.sleep(1)
+    # HPO
+    df_minute240_HPO = pyupbit.get_ohlcv("KRW-HPO", interval="minute240",count=120)
+    time.sleep(1)
+    # EGLD
+    df_minute240_EGLD = pyupbit.get_ohlcv("KRW-EGLD", interval="minute240",count=120)
+    time.sleep(1)
+    # HIVE
+    df_minute240_HIVE = pyupbit.get_ohlcv("KRW-HIVE", interval="minute240",count=120)
+    time.sleep(1)
+    # GRS
+    df_minute240_GRS = pyupbit.get_ohlcv("KRW-GRS", interval="minute240",count=120)
+    time.sleep(1)
+    # QKC
+    df_minute240_QKC = pyupbit.get_ohlcv("KRW-QKC", interval="minute240",count=120)
+    time.sleep(1)
+    # STPT
+    df_minute240_STPT = pyupbit.get_ohlcv("KRW-STPT", interval="minute240",count=120)
+    time.sleep(1)
+    # XEM
+    df_minute240_XEM = pyupbit.get_ohlcv("KRW-XEM", interval="minute240",count=120)
+    time.sleep(1)
+    # STEEM
+    df_minute240_STEEM = pyupbit.get_ohlcv("KRW-STEEM", interval="minute240",count=120)
+    time.sleep(1)
+    # ATOM
+    df_minute240_ATOM = pyupbit.get_ohlcv("KRW-ATOM", interval="minute240",count=120)
+    time.sleep(1)
+    # LOOM
+    df_minute240_LOOM = pyupbit.get_ohlcv("KRW-LOOM", interval="minute240",count=120)
+    time.sleep(1)
+    # 1INCH
+    df_minute240_1INCH = pyupbit.get_ohlcv("KRW-1INCH", interval="minute240",count=120)
+    time.sleep(1)
+    # ARK
+    df_minute240_ARK = pyupbit.get_ohlcv("KRW-ARK", interval="minute240",count=120)
+    time.sleep(1)
+    # ZIL
+    df_minute240_ZIL = pyupbit.get_ohlcv("KRW-ZIL", interval="minute240",count=120)
+    time.sleep(1)
+    # CRE
+    df_minute240_CRE = pyupbit.get_ohlcv("KRW-CRE", interval="minute240",count=120)
+    time.sleep(1)
+    # MBL
+    df_minute240_MBL = pyupbit.get_ohlcv("KRW-MBL", interval="minute240",count=120)
+    time.sleep(1)
+    # ALGO
+    df_minute240_ALGO = pyupbit.get_ohlcv("KRW-ALGO", interval="minute240",count=120)
+    time.sleep(1)
+    # STORJ
+    df_minute240_STORJ = pyupbit.get_ohlcv("KRW-STORJ", interval="minute240",count=120)
+    time.sleep(1)
+    # DKA
+    df_minute240_DKA = pyupbit.get_ohlcv("KRW-DKA", interval="minute240",count=120)
+    time.sleep(1)
+    # XLM
+    df_minute240_XLM = pyupbit.get_ohlcv("KRW-XLM", interval="minute240",count=120)
+    time.sleep(1)
+    # IOST
+    df_minute240_IOST = pyupbit.get_ohlcv("KRW-IOST", interval="minute240",count=120)
+    time.sleep(1)
+    # ARDR
+    df_minute240_ARDR = pyupbit.get_ohlcv("KRW-ARDR", interval="minute240",count=120)
+    time.sleep(1)
+    # CHZ
+    df_minute240_CHZ = pyupbit.get_ohlcv("KRW-CHZ", interval="minute240",count=120)
+    time.sleep(1)
+    # MINA
+    df_minute240_MINA = pyupbit.get_ohlcv("KRW-MINA", interval="minute240",count=120)
+    time.sleep(1)
+    # MANA
+    df_minute240_MANA = pyupbit.get_ohlcv("KRW-MANA", interval="minute240",count=120)
+    time.sleep(1)
+    # KAVA
+    df_minute240_KAVA = pyupbit.get_ohlcv("KRW-KAVA", interval="minute240",count=120)
+    time.sleep(1)
+    # MASK
+    df_minute240_MASK = pyupbit.get_ohlcv("KRW-MASK", interval="minute240",count=120)
+    time.sleep(1)
+    # BLUR
+    df_minute240_BLUR = pyupbit.get_ohlcv("KRW-BLUR", interval="minute240",count=120)
+    time.sleep(1)
+    # SNT
+    df_minute240_SNT = pyupbit.get_ohlcv("KRW-SNT", interval="minute240",count=120)
+    time.sleep(1)
+    # POWR
+    df_minute240_POWR = pyupbit.get_ohlcv("KRW-POWR", interval="minute240",count=120)
+    time.sleep(1)
+    # AXS
+    df_minute240_AXS = pyupbit.get_ohlcv("KRW-AXS", interval="minute240",count=120)
+    time.sleep(1)
+    # DOT
+    df_minute240_DOT = pyupbit.get_ohlcv("KRW-DOT", interval="minute240",count=120)
+    time.sleep(1)
+    # MTL
+    df_minute240_MTL = pyupbit.get_ohlcv("KRW-MTL", interval="minute240",count=120)
+    time.sleep(1)
+    # ONT
+    df_minute240_ONT = pyupbit.get_ohlcv("KRW-ONT", interval="minute240",count=120)
+    time.sleep(1)
+    # GLM
+    df_minute240_GLM = pyupbit.get_ohlcv("KRW-GLM", interval="minute240",count=120)
+    time.sleep(1)
+    # MATIC
+    df_minute240_MATIC = pyupbit.get_ohlcv("KRW-MATIC", interval="minute240",count=120)
+    time.sleep(1)
+    # BSV
+    df_minute240_BSV = pyupbit.get_ohlcv("KRW-BSV", interval="minute240",count=120)
+    time.sleep(1)
+    # EOS
+    df_minute240_EOS = pyupbit.get_ohlcv("KRW-EOS", interval="minute240",count=120)
+    time.sleep(1)
+    # MLK
+    df_minute240_MLK = pyupbit.get_ohlcv("KRW-MLK", interval="minute240",count=120)
+    time.sleep(1)
+    # THETA
+    df_minute240_THETA = pyupbit.get_ohlcv("KRW-THETA", interval="minute240",count=120)
+    time.sleep(1)
+    # TRX
+    df_minute240_TRX = pyupbit.get_ohlcv("KRW-TRX", interval="minute240",count=120)
+    time.sleep(1)
+    # ASTR
+    df_minute240_ASTR = pyupbit.get_ohlcv("KRW-ASTR", interval="minute240",count=120)
+    time.sleep(1)
+    # GAS
+    df_minute240_GAS = pyupbit.get_ohlcv("KRW-GAS", interval="minute240",count=120)
+    time.sleep(1)
+    # WAVES
+    df_minute240_WAVES = pyupbit.get_ohlcv("KRW-WAVES", interval="minute240",count=120)
+    time.sleep(1)
+    # MNT
+    df_minute240_MNT = pyupbit.get_ohlcv("KRW-MNT", interval="minute240",count=120)
+    time.sleep(1)
+    # VET
+    df_minute240_VET = pyupbit.get_ohlcv("KRW-VET", interval="minute240",count=120)
+    time.sleep(1)
+    # QTUM
+    df_minute240_QTUM = pyupbit.get_ohlcv("KRW-QTUM", interval="minute240",count=120)
+    time.sleep(1)
+    # PUNDIX
+    df_minute240_PUNDIX = pyupbit.get_ohlcv("KRW-PUNDIX", interval="minute240",count=120)
+    time.sleep(1)
+    # NEO
+    df_minute240_NEO = pyupbit.get_ohlcv("KRW-NEO", interval="minute240",count=120)
     time.sleep(1)
     # 
     
     
+    
 
-    # Add indicators to both dataframes
+    # Add indicators to both dataframes    
     
     df_minute240_XEC = add_indicators_version3(df_minute240_XEC)
     df_minute240_CVC = add_indicators_version3(df_minute240_CVC)
@@ -333,6 +483,57 @@ def fetch_and_prepare_data():
     df_minute240_XTZ = add_indicators_version3(df_minute240_XTZ)
     df_minute240_TON = add_indicators_version3(df_minute240_TON)
 
+    ####################################################################33
+    df_minute240_IMX = add_indicators_version3(df_minute240_IMX)
+    df_minute240_HPO = add_indicators_version3(df_minute240_HPO)
+    df_minute240_EGLD = add_indicators_version3(df_minute240_EGLD)
+    df_minute240_HIVE = add_indicators_version3(df_minute240_HIVE)
+    df_minute240_GRS = add_indicators_version3(df_minute240_GRS)
+    df_minute240_QKC = add_indicators_version3(df_minute240_QKC)
+    df_minute240_STPT = add_indicators_version3(df_minute240_STPT)
+    df_minute240_XEM = add_indicators_version3(df_minute240_XEM)
+    df_minute240_STEEM = add_indicators_version3(df_minute240_STEEM)
+    df_minute240_ATOM = add_indicators_version3(df_minute240_ATOM)
+    df_minute240_LOOM = add_indicators_version3(df_minute240_LOOM)
+    df_minute240_1INCH = add_indicators_version3(df_minute240_1INCH)
+    df_minute240_ARK = add_indicators_version3(df_minute240_ARK)
+    df_minute240_ZIL = add_indicators_version3(df_minute240_ZIL)
+    df_minute240_CRE = add_indicators_version3(df_minute240_CRE)
+    df_minute240_MBL = add_indicators_version3(df_minute240_MBL)
+    df_minute240_ALGO = add_indicators_version3(df_minute240_ALGO)
+    df_minute240_STORJ = add_indicators_version3(df_minute240_STORJ)
+    df_minute240_DKA = add_indicators_version3(df_minute240_DKA)
+    df_minute240_XLM = add_indicators_version3(df_minute240_XLM)
+    df_minute240_IOST = add_indicators_version3(df_minute240_IOST)
+    df_minute240_ARDR = add_indicators_version3(df_minute240_ARDR)
+    df_minute240_CHZ = add_indicators_version3(df_minute240_CHZ)
+    df_minute240_MINA = add_indicators_version3(df_minute240_MINA)
+    df_minute240_MANA = add_indicators_version3(df_minute240_MANA)
+    df_minute240_KAVA = add_indicators_version3(df_minute240_KAVA)
+    df_minute240_MASK = add_indicators_version3(df_minute240_MASK)
+    df_minute240_BLUR = add_indicators_version3(df_minute240_BLUR)
+    df_minute240_SNT = add_indicators_version3(df_minute240_SNT)
+    df_minute240_POWR = add_indicators_version3(df_minute240_POWR)
+    df_minute240_AXS = add_indicators_version3(df_minute240_AXS)
+    df_minute240_DOT = add_indicators_version3(df_minute240_DOT)
+    df_minute240_MTL = add_indicators_version3(df_minute240_MTL)
+    df_minute240_ONT = add_indicators_version3(df_minute240_ONT)
+    df_minute240_GLM = add_indicators_version3(df_minute240_GLM)
+    df_minute240_MATIC = add_indicators_version3(df_minute240_MATIC)
+    df_minute240_BSV = add_indicators_version3(df_minute240_BSV)
+    df_minute240_EOS = add_indicators_version3(df_minute240_EOS)
+    df_minute240_MLK = add_indicators_version3(df_minute240_MLK)
+    df_minute240_THETA = add_indicators_version3(df_minute240_THETA)
+    df_minute240_TRX = add_indicators_version3(df_minute240_TRX)
+    df_minute240_ASTR = add_indicators_version3(df_minute240_ASTR)
+    df_minute240_GAS = add_indicators_version3(df_minute240_GAS)
+    df_minute240_WAVES = add_indicators_version3(df_minute240_WAVES)
+    df_minute240_MNT = add_indicators_version3(df_minute240_MNT)
+    df_minute240_VET = add_indicators_version3(df_minute240_VET)
+    df_minute240_QTUM = add_indicators_version3(df_minute240_QTUM)
+    df_minute240_PUNDIX = add_indicators_version3(df_minute240_PUNDIX)
+    df_minute240_NEO = add_indicators_version3(df_minute240_NEO)
+    
 
 
 
@@ -409,6 +610,57 @@ def fetch_and_prepare_data():
     df_minute240_AAVE_tail = df_minute240_AAVE.tail(n=1)
     df_minute240_XTZ_tail = df_minute240_XTZ.tail(n=1)
     df_minute240_TON_tail = df_minute240_TON.tail(n=1)
+    #####################################################333
+    df_minute240_IMX_tail = df_minute240_IMX.tail(n=1)
+    df_minute240_HPO_tail = df_minute240_HPO.tail(n=1)
+    df_minute240_EGLD_tail = df_minute240_EGLD.tail(n=1)
+    df_minute240_HIVE_tail = df_minute240_HIVE.tail(n=1)
+    df_minute240_GRS_tail = df_minute240_GRS.tail(n=1)
+    df_minute240_QKC_tail = df_minute240_QKC.tail(n=1)
+    df_minute240_STPT_tail = df_minute240_STPT.tail(n=1)
+    df_minute240_XEM_tail = df_minute240_XEM.tail(n=1)
+    df_minute240_STEEM_tail = df_minute240_STEEM.tail(n=1)
+    df_minute240_ATOM_tail = df_minute240_ATOM.tail(n=1)
+    df_minute240_LOOM_tail = df_minute240_LOOM.tail(n=1)
+    df_minute240_1INCH_tail = df_minute240_1INCH.tail(n=1)
+    df_minute240_ARK_tail = df_minute240_ARK.tail(n=1)
+    df_minute240_ZIL_tail = df_minute240_ZIL.tail(n=1)
+    df_minute240_CRE_tail = df_minute240_CRE.tail(n=1)
+    df_minute240_MBL_tail = df_minute240_MBL.tail(n=1)
+    df_minute240_ALGO_tail = df_minute240_ALGO.tail(n=1)
+    df_minute240_STORJ_tail = df_minute240_STORJ.tail(n=1)
+    df_minute240_DKA_tail = df_minute240_DKA.tail(n=1)
+    df_minute240_XLM_tail = df_minute240_XLM.tail(n=1)
+    df_minute240_IOST_tail = df_minute240_IOST.tail(n=1)
+    df_minute240_ARDR_tail = df_minute240_ARDR.tail(n=1)
+    df_minute240_CHZ_tail = df_minute240_CHZ.tail(n=1)
+    df_minute240_MINA_tail = df_minute240_MINA.tail(n=1)
+    df_minute240_MANA_tail = df_minute240_MANA.tail(n=1)
+    df_minute240_KAVA_tail = df_minute240_KAVA.tail(n=1)
+    df_minute240_MASK_tail = df_minute240_MASK.tail(n=1)
+    df_minute240_BLUR_tail = df_minute240_BLUR.tail(n=1)
+    df_minute240_SNT_tail = df_minute240_SNT.tail(n=1)
+    df_minute240_POWR_tail = df_minute240_POWR.tail(n=1)
+    df_minute240_AXS_tail = df_minute240_AXS.tail(n=1)
+    df_minute240_DOT_tail = df_minute240_DOT.tail(n=1)
+    df_minute240_MTL_tail = df_minute240_MTL.tail(n=1)
+    df_minute240_ONT_tail = df_minute240_ONT.tail(n=1)
+    df_minute240_GLM_tail = df_minute240_GLM.tail(n=1)
+    df_minute240_MATIC_tail = df_minute240_MATIC.tail(n=1)
+    df_minute240_BSV_tail = df_minute240_BSV.tail(n=1)
+    df_minute240_EOS_tail = df_minute240_EOS.tail(n=1)
+    df_minute240_MLK_tail = df_minute240_MLK.tail(n=1)
+    df_minute240_THETA_tail = df_minute240_THETA.tail(n=1)
+    df_minute240_TRX_tail = df_minute240_TRX.tail(n=1)
+    df_minute240_ASTR_tail = df_minute240_ASTR.tail(n=1)
+    df_minute240_GAS_tail = df_minute240_GAS.tail(n=1)
+    df_minute240_WAVES_tail = df_minute240_WAVES.tail(n=1)
+    df_minute240_MNT_tail = df_minute240_MNT.tail(n=1)
+    df_minute240_VET_tail = df_minute240_VET.tail(n=1)
+    df_minute240_QTUM_tail = df_minute240_QTUM.tail(n=1)
+    df_minute240_PUNDIX_tail = df_minute240_PUNDIX.tail(n=1)
+    df_minute240_NEO_tail = df_minute240_NEO.tail(n=1)
+    
 
 
 ########################################################################################################################
@@ -433,7 +685,19 @@ def fetch_and_prepare_data():
                              df_minute240_MOC_tail, df_minute240_TFUEL_tail, df_minute240_TT_tail, df_minute240_KNC_tail,
                              df_minute240_CRO_tail, df_minute240_META_tail, df_minute240_ELF_tail, df_minute240_AHT_tail,
                              df_minute240_BAT_tail, df_minute240_SBD_tail, df_minute240_MED_tail, df_minute240_AAVE_tail,
-                             df_minute240_XTZ_tail, df_minute240_TON_tail
+                             df_minute240_XTZ_tail, df_minute240_TON_tail, df_minute240_IMX_tail, df_minute240_HPO_tail,
+                             df_minute240_EGLD_tail, df_minute240_HIVE_tail, df_minute240_GRS_tail, df_minute240_QKC_tail,
+                             df_minute240_STPT_tail, df_minute240_XEM_tail, df_minute240_STEEM_tail, df_minute240_ATOM_tail,
+                             df_minute240_LOOM_tail, df_minute240_1INCH_tail, df_minute240_ARK_tail, df_minute240_ZIL_tail,
+                             df_minute240_CRE_tail, df_minute240_MBL_tail, df_minute240_ALGO_tail, df_minute240_STORJ_tail,
+                             df_minute240_DKA_tail, df_minute240_XLM_tail, df_minute240_IOST_tail, df_minute240_ARDR_tail,
+                             df_minute240_CHZ_tail, df_minute240_MINA_tail, df_minute240_MANA_tail, df_minute240_KAVA_tail,
+                             df_minute240_MASK_tail, df_minute240_BLUR_tail, df_minute240_SNT_tail, df_minute240_POWR_tail,
+                             df_minute240_AXS_tail, df_minute240_DOT_tail, df_minute240_MTL_tail, df_minute240_ONT_tail,
+                             df_minute240_GLM_tail, df_minute240_MATIC_tail, df_minute240_BSV_tail, df_minute240_EOS_tail,
+                             df_minute240_MLK_tail, df_minute240_THETA_tail, df_minute240_TRX_tail, df_minute240_ASTR_tail,
+                             df_minute240_GAS_tail, df_minute240_WAVES_tail, df_minute240_MNT_tail, df_minute240_VET_tail,
+                             df_minute240_QTUM_tail, df_minute240_PUNDIX_tail, df_minute240_NEO_tail
                             ], 
                         keys=['KRW-XEC', 'KRW-CVC','KRW-POLYX','KRW-T',
                             'KRW-SHIB','KRW-BTC','KRW-XRP','KRW-DOGE',
@@ -452,9 +716,21 @@ def fetch_and_prepare_data():
                             "KRW-MOC", "KRW-TFUEL","KRW-TT","KRW-KNC",
                             "KRW-CRO", "KRW-META", "KRW-ELF", "KRW-AHT",
                             "KRW-BAT", "KRW-SBD", "KRW-MED", "KRW-AAVE",
-                            "KRW-XTZ", "KRW-TON"
+                            "KRW-XTZ", "KRW-TON", "KRW-IMX", "KRW-HPO",
+                            "KRW-EGLD", "KRW-HIVE", "KRW-GRS", "KRW-QKC",
+                            "KRW-STPT", "KRW-XEM", "KRW-STEEM", "KRW-ATOM",
+                            "KRW-LOOM", "KRW-1INCH", "KRW-ARK", "KRW-ZIL",
+                            "KRW-CRE", "KRW-MBL", "KRW-ALGO", "KRW-STORJ",
+                            "KRW-DKA", "KRW-XLM", "KRW-IOST", "KRW-ARDR",
+                            "KRW-CHZ", "KRW-MINA", "KRW-MANA", "KRW-KAVA",
+                            "KRW-MASK", "KRW-BLUR", "KRW-SNT", "KRW-POWR",
+                            "KRW-AXS", "KRW-DOT", "KRW-MTL", "KRW-ONT",
+                            "KRW-GLM", "KRW-MATIC", "KRW-BSV", "KRW-EOS",
+                            "KRW-MLK", "KRW-THETA", "KRW-TRX", "KRW-ASTR",
+                            "KRW-GAS", "KRW-WAVES", "KRW-MNT", "KRW-VET",
+                            "KRW-QTUM", "KRW-PUNDIX", "KRW-NEO"
                             ])
-    #  EMA > SMA
+    #  EMA > SMA    
     combined_df_sma_5_20 = combined_df[combined_df['SMA_5'] > combined_df['SMA_20']]
     combined_df_sma_5_60 =  combined_df_sma_5_20[combined_df_sma_5_20['SMA_5'] > combined_df_sma_5_20['SMA_60']]
     combined_df_sma_5_120 = combined_df_sma_5_60[combined_df_sma_5_60['SMA_5'] > combined_df_sma_5_60['SMA_120']]
@@ -476,13 +752,56 @@ def fetch_and_prepare_data():
     # The Chaikin Money Flow ("cmf") indicator has surged above 0
 
     combined_df_sort_cmf = combined_df_sort[combined_df_sort['cmf'] > 0]
-    if len(combined_df_sort) != 0:
+    if len(combined_df_sort_cmf) != 0:
         combined_df_sort = combined_df_sort_cmf
+    
+    #"When the "SQZPRO_20_2.0_20_2_1.5_1" value is positive, it indicates that the Squeeze Pro indicator is positive, signifying a contraction in volatility between the Bollinger Bands and Keltner Channels. This suggests an imminent sharp price movement,
+    combined_df_sort_SQZPRO_20_2 = combined_df_sort[combined_df_sort["SQZPRO_20_2.0_20_2_1.5_1"] > 0]
+    if len(combined_df_sort_SQZPRO_20_2) != 0:
+        combined_df_sort = combined_df_sort_SQZPRO_20_2
+        
+
+    #"When "SQZPRO_ON_WIDE" is indicated as 1, it signifies a squeeze occurring within a wide range of Keltner Channels, suggesting a significant change in volatility and typically indicating a moment of rapid price movement. 
+
+
+    combined_df_sort_SQZPRO_ON_WIDE = combined_df_sort[combined_df_sort["SQZPRO_ON_WIDE"] == 1]
+    if len(combined_df_sort_SQZPRO_ON_WIDE) != 0:
+        combined_df_sort = combined_df_sort_SQZPRO_ON_WIDE
+
+    #매수 타이밍:
+
+    # Z-Score가 음수인 경우: 해당 자산이 평균보다 낮게 평가되어 있으므로 매수 타이밍일 수 있습니다.
+    # 또는 Z-Score가 일정 임계값 이하인 경우에도 매수 타이밍일 수 있습니다. 이는 해당 자산이 과소평가되었을 가능성이 있기 때문입니다.
+    combined_df_sort_ZS_30 = combined_df_sort[combined_df_sort["ZS_30"] < 0]
+    if len(combined_df_sort_ZS_30) != 0:
+        combined_df_sort = combined_df_sort_ZS_30
+
+    # df["close"] > df["TOS_STDEVALL_30_LR"]
+    # """
+    # 매수 기회 시점:
+
+    # a) 더 공격적인 전략:
+
+    # df["close"] > df["TOS_STDEVALL_30_L_1"] 조건은 하단 밴드에 근접했을 때 매수를 신호할 수 있어 더 공격적인 전략입니다.
+    # 하지만, 하락 후 바로 반등하지 않고 변동성이 지속될 수도 있어 위험성 또한 높습니다.
+    # b) 더 안전한 전략:
+
+    # df["close"] > df["TOS_STDEVALL_30_LR"] 조건은 LR 선을 넘어섰을 때 매수를 신호할 수 있어 더 안전한 전략입니다.
+    # 하지만, 상승 기회를 일부 놓칠 수도 있습니다.
+    # 3. 결론:
+
+    # 어떤 조건을 사용할지는 투자 스타일과 위험 수용 태도에 따라 달라집니다.
+    # 더 공격적인 투자를 원한다면 df["close"] > df["TOS_STDEVALL_30_L_1"]을 사용할 수 있습니다.
+    # 보수적인 투자를 원한다면 df["close"] > df["TOS_STDEVALL_30_LR"]을 사용할 수 있습니다.
+    # """
+    combined_df_sort_TOS_STDEVALL_30_LR = combined_df_sort[ combined_df_sort["close"] > combined_df_sort["TOS_STDEVALL_30_LR"]]
+    if len(combined_df_sort_TOS_STDEVALL_30_LR) != 0:
+        combined_df_sort = combined_df_sort_TOS_STDEVALL_30_LR
 
     combined_df_sort_v2 = combined_df_sort[(combined_df_sort['EMA_5'] > combined_df_sort['SMA_5'])]
     # when the current close price falls below the lower Donchian Channel (DCL_20_20), 
     combined_df_DCL_20_20 = combined_df_sort_v2[combined_df_sort_v2['close'] < combined_df_sort_v2['DCL_20_20']]
-    
+
     if len(combined_df_DCL_20_20) != 0:
         sorted_value_df = combined_df_DCL_20_20.sort_values(by='value', ascending=True)
     else:
@@ -499,12 +818,11 @@ def fetch_and_prepare_data():
                         sorted_value_df = combined_df_sma_5_60.sort_values(by='value', ascending=True)
                     else:
                         sorted_value_df = combined_df_sma_5_20.sort_values(by='value', ascending=True)
-
     
     result = sorted_value_df.tail(n=1)
     combined_data = result.to_json(orient='split')
     #combined_data_dumps = json.dumps(combined_data)
-    #print(combined_data)
+    #print(combined_data)  
     # JSON 문자열을 파이썬 딕셔너리로 변환
     data_json = json.loads(combined_data)
     # 'index' 키에 해당하는 값을 추출
@@ -604,7 +922,7 @@ def make_decision_and_execute_schedule():
             data_json_v2, index_value_v2 = fetch_and_prepare_data()
             print(data_json_v2)
             last_decisions = fetch_last_decisions()
-            fear_and_greed = fetch_fear_and_greed_index(limit=30)
+            fear_and_greed = fetch_fear_and_greed_index(limit=7)
             current_status = get_current_status(index_value_v2)
             for attempt in range(max_retries):
                 try:
@@ -708,7 +1026,7 @@ if __name__ == "__main__":
 """
 What Is the Crypto Fear and Greed Index? 
 
-0-24: Extreme Fear (indicating potential buying opportunities as market participants might be too worried)
+0-24: Extreme Fear (indicating potential buying opportunities as market participants might be too worried), Extreme Fear can lead to stocks becoming oversold or undervalued, which is a buy indicator.
 
 25-49: Fear (suggesting caution among investors)
 
@@ -716,5 +1034,7 @@ What Is the Crypto Fear and Greed Index?
 
 51-74: Greed (implying increasing market confidence and investment risk)
 
-75-100: Extreme Greed (a warning signal that the market may be overvalued and due for a correction)
+75-100: Extreme Greed (a warning signal that the market may be overvalued and due for a correction), Extreme Greed can result in stocks becoming overbought or overvalued, which can trigger mass selling.
+
+
 """
