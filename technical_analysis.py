@@ -1,5 +1,5 @@
 import pandas_ta as ta
-
+        
 # Define a helper function to add indicators  
 def add_indicators(df):
     # Moving Averages
@@ -90,4 +90,50 @@ def add_indicators_version3(df):
     df = add_indicators_version2(df)
     donchian = ta.donchian(df["high"],df["low"], lower_length = 20, upper_length = 20, offset = 0)
     df = df.join(donchian)
+    zscore = ta.zscore(close= df["close"],length = 30, std = 1 ,offset = 0)
+    df = df.join(zscore)
+    tos_stdevall = ta.tos_stdevall(close= df["close"], length = 30, stds = [1,2,3], ddof = 1, offset = 0)
+    df = df.join(tos_stdevall)
+    return df
+
+
+def add_indicators_version4(df):
+    df = add_indicators_version3(df)
+    # Trend indicators
+    # Ichimoku Cloud
+    ichimoku = ta.ichimoku(df["high"], df["low"],df["close"])
+    df = df.join(ichimoku)
+
+    # Aroon
+    aroon = ta.aroon(df["high"], df["low"])
+    df = df.join(aroon)
+
+    # Chande Momentum Oscillator (CMO)
+    cmo = ta.cmo(df["close"])
+    df = df.join(cmo)
+
+    # Rate of Change (ROC)
+    roc = ta.roc(df["close"])
+    df = df.join(roc)
+
+    # William's %R
+    willr = ta.willr(df["high"], df["low"], df["close"])
+    df = df.join(willr)
+
+
+    # On-Balance Volume
+    obv = ta.obv(df["close"], df["volume"])
+    df = df.join(obv)
+
+
+    # Volatility indicators
+    # Average True Range (ATR)
+    atr = ta.atr(df["high"], df["low"], df["close"])
+    df = df.join(atr)
+
+    # Keltner Channel
+    keltner = ta.kc(df["high"], df["low"], df["close"])
+    df = df.join(keltner)
+
+
     return df
