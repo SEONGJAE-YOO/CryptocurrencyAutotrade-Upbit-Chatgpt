@@ -85,7 +85,7 @@ def add_indicators_version2(df):
 
     return df
 
-# autotrade_version9.py 에서 사용되는 기술적 분석 기능
+# autotrade_version9.py 에서 사용되는 기술적 분석 기능  
 def add_indicators_version3(df):
     df = add_indicators_version2(df)
     donchian = ta.donchian(df["high"],df["low"], lower_length = 20, upper_length = 20, offset = 0)
@@ -94,16 +94,6 @@ def add_indicators_version3(df):
     df = df.join(zscore)
     tos_stdevall = ta.tos_stdevall(close= df["close"], length = 30, stds = [1,2,3], ddof = 1, offset = 0)
     df = df.join(tos_stdevall)
-    return df
-
-
-def add_indicators_version4(df):
-    df = add_indicators_version3(df)
-    # Trend indicators
-    # Ichimoku Cloud
-    ichimoku = ta.ichimoku(df["high"], df["low"],df["close"])
-    df = df.join(ichimoku)
-
     # Aroon
     aroon = ta.aroon(df["high"], df["low"])
     df = df.join(aroon)
@@ -112,13 +102,23 @@ def add_indicators_version4(df):
     cmo = ta.cmo(df["close"])
     df = df.join(cmo)
 
-    # Rate of Change (ROC)
-    roc = ta.roc(df["close"])
+    # Rate of Change (ROC) , ROC 값이 음수에서 양수로 변하는 시점을 매수 시점으로 고려하겠습니다.
+    roc = ta.roc(df["close"],length=10)
     df = df.join(roc)
 
     # William's %R
     willr = ta.willr(df["high"], df["low"], df["close"])
     df = df.join(willr)
+    return df
+
+
+def add_indicators_version4(df):
+    df = add_indicators_version3(df)
+    # Trend indicators
+    # Ichimoku Cloud
+    # raise ValueError(f"Indexes have overlapping values: {overlap}") ValueError: Indexes have overlapping values: Index(['ISA_9', 'ISB_26'], dtype='object')
+    #ichimoku = ta.ichimoku(df["high"], df["low"],df["close"])
+    #df = df.join(ichimoku)
 
 
     # On-Balance Volume
