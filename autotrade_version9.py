@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 load_dotenv()
+import numpy as np
 import pyupbit
 import pandas as pd  
 import pandas_ta as ta
@@ -730,7 +731,9 @@ def fetch_and_prepare_data():
                             "KRW-GAS", "KRW-WAVES", "KRW-MNT", "KRW-VET",
                             "KRW-QTUM", "KRW-PUNDIX", "KRW-NEO"
                             ])
-    #  EMA > SMA    
+    #
+    combined_df = combined_df.dropna(how='any', axis=0)    
+    #  SMA_5 > SMA_20    
     combined_df_sma_5_20 = combined_df[combined_df['SMA_5'] > combined_df['SMA_20']]
     combined_df_sma_5_60 =  combined_df_sma_5_20[combined_df_sma_5_20['SMA_5'] > combined_df_sma_5_20['SMA_60']]
     combined_df_sma_5_120 = combined_df_sma_5_60[combined_df_sma_5_60['SMA_5'] > combined_df_sma_5_60['SMA_120']]
@@ -754,7 +757,7 @@ def fetch_and_prepare_data():
     combined_df_sort_cmf = combined_df_sort[combined_df_sort['cmf'] > 0]
     if len(combined_df_sort_cmf) != 0:
         combined_df_sort = combined_df_sort_cmf
-    
+
     #"When the "SQZPRO_20_2.0_20_2_1.5_1" value is positive, it indicates that the Squeeze Pro indicator is positive, signifying a contraction in volatility between the Bollinger Bands and Keltner Channels. This suggests an imminent sharp price movement,
     combined_df_sort_SQZPRO_20_2 = combined_df_sort[combined_df_sort["SQZPRO_20_2.0_20_2_1.5_1"] > 0]
     if len(combined_df_sort_SQZPRO_20_2) != 0:
@@ -797,6 +800,53 @@ def fetch_and_prepare_data():
     combined_df_sort_TOS_STDEVALL_30_LR = combined_df_sort[ combined_df_sort["close"] > combined_df_sort["TOS_STDEVALL_30_LR"]]
     if len(combined_df_sort_TOS_STDEVALL_30_LR) != 0:
         combined_df_sort = combined_df_sort_TOS_STDEVALL_30_LR
+        
+    ###
+    # Aroon Up이 Down을 상향 돌파하면 주가의 고점이 저점보다 가까이 위치한 상태가 된 것이다. 따라서 주가가 상승 추세에 있는 것으로 해석할 수 있다. 
+    # 반대로 Aroon Down이 Up을 상향 돌파하면 주가의 저점이 고점보다 가까이 위치한 것으로 주가가 하락 추세에 있는 것으로 해석할 수 있다. 
+    #그러므로 Aroon Up이 Down을 상향 돌파하면 주가가 상승 추세로 전환될 것으로 예상해 매수하고 
+    # Aroon Down이 Up을 상향 돌파하면 주가가 하락 추세로 전환될 것으로 예상해 매도하는 전략을 사용할 수 있다.
+    # A common buying condition using the Aroon indicator is when Aroon Up crosses above Aroon Down
+    #  Assuming 'aroon_up' and 'aroon_down' are the Aroon Up and Aroon Down indicators respectively
+    combined_df_sort['aroon_cross'] = np.where(combined_df_sort['AROONU_14'] > combined_df_sort['AROOND_14'], 1, 0)
+
+    # Filter the DataFrame for the buying condition
+    combined_df_sort_aroon_cross = combined_df_sort[combined_df_sort['aroon_cross'] == 1]
+    if len(combined_df_sort_aroon_cross) != 0:
+        combined_df_sort = combined_df_sort_aroon_cross
+        
+    ## Chande Momentum Oscillator (CMO)
+    #  CMO 값이 -50 이하일 경우, 주식이 과매도 상태에 있으므로 매수 기회로 간주될 수 있습니다
+    # 조건: CMO_14 값이 -50 이하인 경우
+    buy_condition = combined_df_sort["CMO_14"] <= -50
+
+
+    buy_condition_CMO = combined_df_sort[buy_condition]
+    if len(buy_condition_CMO) != 0:
+        combined_df_sort = buy_condition_CMO
+        
+    # RSO
+    combined_df_sort_ROC_10 = combined_df_sort[combined_df_sort['ROC_10'] > 0]
+    if len(combined_df_sort_ROC_10) != 0:
+        combined_df_sort = combined_df_sort_ROC_10
+        
+    # WILLR 지표를 사용한 매수 조건: WILLR 값이 -20 이하인 경우 (length=14)
+    combined_df_sort_WILLR = combined_df_sort[combined_df_sort['WILLR_14'] <= -20]
+    if len(combined_df_sort_WILLR) != 0:
+        combined_df_sort = combined_df_sort_WILLR
+        
+        """
+        # MACD 지표를 사용한 매수 조건: MACD line이 signal line을 상향 돌파한 경우
+    buy_condition_MACD = combined_df_sort["MACD"] > combined_df_sort["MACD_Signal"]
+
+    buy_condition_MACD_df = combined_df_sort[buy_condition_MACD]
+    if len(buy_condition_MACD_df) != 0:
+        combined_df_sort = buy_condition_MACD_df
+
+    # 볼린저 밴드를 사용한 매수 조건: 현재 종가가 lower band 아래에 있는 경우
+    combined_df_sort_v2 = combined_df_sort[combined_df_sort['close'] < combined_df_sort['Lower_Band']]
+
+        """
 
     combined_df_sort_v2 = combined_df_sort[(combined_df_sort['EMA_5'] > combined_df_sort['SMA_5'])]
     # when the current close price falls below the lower Donchian Channel (DCL_20_20), 
@@ -818,6 +868,7 @@ def fetch_and_prepare_data():
                         sorted_value_df = combined_df_sma_5_60.sort_values(by='value', ascending=True)
                     else:
                         sorted_value_df = combined_df_sma_5_20.sort_values(by='value', ascending=True)
+
     
     result = sorted_value_df.tail(n=1)
     combined_data = result.to_json(orient='split')
@@ -1006,8 +1057,6 @@ if __name__ == "__main__":
 
     # 17:00에 실행되는 스케줄 설정
     schedule.every().day.at("17:00").do(make_decision_and_execute_schedule)
-
-    # 여기에 추가로 스케줄을 설정하세요
     schedule.every().day.at("21:00").do(make_decision_and_execute_schedule)
     schedule.every().day.at("01:00").do(make_decision_and_execute_schedule)
 
