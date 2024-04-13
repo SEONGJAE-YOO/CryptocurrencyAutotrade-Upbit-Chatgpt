@@ -9,7 +9,7 @@ import json
 from openai import OpenAI
 import schedule
 import time
-from technical_analysis import add_indicators_version4
+from technical_analysis import add_indicators_version4, trix_buy_signal
 from sqlite3_db_function import *
 import requests
 
@@ -535,7 +535,7 @@ def fetch_and_prepare_data():
     df_minute240_PUNDIX = add_indicators_version4(df_minute240_PUNDIX)
     df_minute240_NEO = add_indicators_version4(df_minute240_NEO)
     
-
+    
 
 
 #############################################################################################################################
@@ -665,72 +665,68 @@ def fetch_and_prepare_data():
 
 
 ########################################################################################################################
-    
-
-
-    
     combined_df = pd.concat([df_minute240_XEC_tail, df_minute240_CVC_tail,df_minute240_POLYX_tail,df_minute240_T_tail,
-                             df_minute240_SHIB_tail,df_minute240_BTC_tail,df_minute240_XRP_tail, df_minute240_DOGE_tail,
-                             df_minute240_WAXP_tail,df_minute240_CTC_tail,df_minute240_ANKR_tail,df_minute240_AERGO_tail,
-                             df_minute240_HIFI_tail,df_minute240_SOL_tail, df_minute240_STMX_tail,df_minute240_ETH_tail,
-                             df_minute240_ID_tail, df_minute240_NEAR_tail, df_minute240_SC_tail, df_minute240_BORA_tail,
-                             df_minute240_PYTH_tail, df_minute240_LSK_tail, df_minute240_STX_tail, df_minute240_ETC_tail,
-                             df_minute240_APT_tail, df_minute240_MVL_tail, df_minute240_SXP_tail, df_minute240_AVAX_tail,
-                             df_minute240_BCH_tail, df_minute240_ICX_tail, df_minute240_SEI_tail, df_minute240_ONG_tail,
-                             df_minute240_BTG_tail, df_minute240_ORBS_tail, df_minute240_ZRX_tail, df_minute240_GMT_tail,
-                             df_minute240_HUNT_tail, df_minute240_IOTA_tail, df_minute240_IQ_tail, df_minute240_STRAX_tail,
-                             df_minute240_CELO_tail, df_minute240_ARB_tail, df_minute240_BTT_tail, df_minute240_HBAR_tail,
-                             df_minute240_LINK_tail, df_minute240_SAND_tail, df_minute240_GRT_tail, df_minute240_FLOW_tail,
-                             df_minute240_ADA_tail, df_minute240_SUI_tail, df_minute240_AQT_tail, df_minute240_CBK_tail,
-                             df_minute240_FCT2_tail, df_minute240_JST_tail, df_minute240_UPP_tail, df_minute240_STRIKE_tail,
-                             df_minute240_MOC_tail, df_minute240_TFUEL_tail, df_minute240_TT_tail, df_minute240_KNC_tail,
-                             df_minute240_CRO_tail, df_minute240_META_tail, df_minute240_ELF_tail, df_minute240_AHT_tail,
-                             df_minute240_BAT_tail, df_minute240_SBD_tail, df_minute240_MED_tail, df_minute240_AAVE_tail,
-                             df_minute240_XTZ_tail, df_minute240_TON_tail, df_minute240_IMX_tail, df_minute240_HPO_tail,
-                             df_minute240_EGLD_tail, df_minute240_HIVE_tail, df_minute240_GRS_tail, df_minute240_QKC_tail,
-                             df_minute240_STPT_tail, df_minute240_XEM_tail, df_minute240_STEEM_tail, df_minute240_ATOM_tail,
-                             df_minute240_LOOM_tail, df_minute240_1INCH_tail, df_minute240_ARK_tail, df_minute240_ZIL_tail,
-                             df_minute240_CRE_tail, df_minute240_MBL_tail, df_minute240_ALGO_tail, df_minute240_STORJ_tail,
-                             df_minute240_DKA_tail, df_minute240_XLM_tail, df_minute240_IOST_tail, df_minute240_ARDR_tail,
-                             df_minute240_CHZ_tail, df_minute240_MINA_tail, df_minute240_MANA_tail, df_minute240_KAVA_tail,
-                             df_minute240_MASK_tail, df_minute240_BLUR_tail, df_minute240_SNT_tail, df_minute240_POWR_tail,
-                             df_minute240_AXS_tail, df_minute240_DOT_tail, df_minute240_MTL_tail, df_minute240_ONT_tail,
-                             df_minute240_GLM_tail, df_minute240_MATIC_tail, df_minute240_BSV_tail, df_minute240_EOS_tail,
-                             df_minute240_MLK_tail, df_minute240_THETA_tail, df_minute240_TRX_tail, df_minute240_ASTR_tail,
-                             df_minute240_GAS_tail, df_minute240_WAVES_tail, df_minute240_MNT_tail, df_minute240_VET_tail,
-                             df_minute240_QTUM_tail, df_minute240_PUNDIX_tail, df_minute240_NEO_tail
-                            ], 
-                        keys=['KRW-XEC', 'KRW-CVC','KRW-POLYX','KRW-T',
-                            'KRW-SHIB','KRW-BTC','KRW-XRP','KRW-DOGE',
-                            'KRW-WAXP','KRW-CTC','KRW-ANKR','KRW-AERGO',
-                            'KRW-HIFI','KRW-SOL','KRW-STMX','KRW-ETH',
-                            "KRW-ID", "KRW-NEAR", "KRW-SC", "KRW-BORA",
-                            "KRW-PYTH", "KRW-LSK", "KRW-STX", "KRW-ETC",
-                            "KRW-APT", "KRW-MVL", "KRW-SXP", "KRW-AVAX",
-                            "KRW-BCH", "KRW-ICX", "KRW-SEI", "KRW-ONG",
-                            "KRW-BTG", "KRW-ORBS", "KRW-ZRX", "KRW-GMT",
-                            "KRW-HUNT", "KRW-IOTA", "KRW-IQ", "KRW-STRAX",
-                            "KRW-CELO", "KRW-ARB", "KRW-BTT", "KRW-HBAR",
-                            "KRW-LINK", "KRW-SAND", "KRW-GRT", "KRW-FLOW",
-                            "KRW-ADA", "KRW-SUI", "KRW-AQT", "KRW-CBK",
-                            "KRW-FCT2", "KRW-JST", "KRW-UPP","KRW-STRIKE",
-                            "KRW-MOC", "KRW-TFUEL","KRW-TT","KRW-KNC",
-                            "KRW-CRO", "KRW-META", "KRW-ELF", "KRW-AHT",
-                            "KRW-BAT", "KRW-SBD", "KRW-MED", "KRW-AAVE",
-                            "KRW-XTZ", "KRW-TON", "KRW-IMX", "KRW-HPO",
-                            "KRW-EGLD", "KRW-HIVE", "KRW-GRS", "KRW-QKC",
-                            "KRW-STPT", "KRW-XEM", "KRW-STEEM", "KRW-ATOM",
-                            "KRW-LOOM", "KRW-1INCH", "KRW-ARK", "KRW-ZIL",
-                            "KRW-CRE", "KRW-MBL", "KRW-ALGO", "KRW-STORJ",
-                            "KRW-DKA", "KRW-XLM", "KRW-IOST", "KRW-ARDR",
-                            "KRW-CHZ", "KRW-MINA", "KRW-MANA", "KRW-KAVA",
-                            "KRW-MASK", "KRW-BLUR", "KRW-SNT", "KRW-POWR",
-                            "KRW-AXS", "KRW-DOT", "KRW-MTL", "KRW-ONT",
-                            "KRW-GLM", "KRW-MATIC", "KRW-BSV", "KRW-EOS",
-                            "KRW-MLK", "KRW-THETA", "KRW-TRX", "KRW-ASTR",
-                            "KRW-GAS", "KRW-WAVES", "KRW-MNT", "KRW-VET",
-                            "KRW-QTUM", "KRW-PUNDIX", "KRW-NEO"
-                            ])
+                            df_minute240_SHIB_tail,df_minute240_BTC_tail,df_minute240_XRP_tail, df_minute240_DOGE_tail,
+                            df_minute240_WAXP_tail,df_minute240_CTC_tail,df_minute240_ANKR_tail,df_minute240_AERGO_tail,
+                            df_minute240_HIFI_tail,df_minute240_SOL_tail, df_minute240_STMX_tail,df_minute240_ETH_tail,
+                            df_minute240_ID_tail, df_minute240_NEAR_tail, df_minute240_SC_tail, df_minute240_BORA_tail,
+                            df_minute240_PYTH_tail, df_minute240_LSK_tail, df_minute240_STX_tail, df_minute240_ETC_tail,
+                            df_minute240_APT_tail, df_minute240_MVL_tail, df_minute240_SXP_tail, df_minute240_AVAX_tail,
+                            df_minute240_BCH_tail, df_minute240_ICX_tail, df_minute240_SEI_tail, df_minute240_ONG_tail,
+                            df_minute240_BTG_tail, df_minute240_ORBS_tail, df_minute240_ZRX_tail, df_minute240_GMT_tail,
+                            df_minute240_HUNT_tail, df_minute240_IOTA_tail, df_minute240_IQ_tail, df_minute240_STRAX_tail,
+                            df_minute240_CELO_tail, df_minute240_ARB_tail, df_minute240_BTT_tail, df_minute240_HBAR_tail,
+                            df_minute240_LINK_tail, df_minute240_SAND_tail, df_minute240_GRT_tail, df_minute240_FLOW_tail,
+                            df_minute240_ADA_tail, df_minute240_SUI_tail, df_minute240_AQT_tail, df_minute240_CBK_tail,
+                            df_minute240_FCT2_tail, df_minute240_JST_tail, df_minute240_UPP_tail, df_minute240_STRIKE_tail,
+                            df_minute240_MOC_tail, df_minute240_TFUEL_tail, df_minute240_TT_tail, df_minute240_KNC_tail,
+                            df_minute240_CRO_tail, df_minute240_META_tail, df_minute240_ELF_tail, df_minute240_AHT_tail,
+                            df_minute240_BAT_tail, df_minute240_SBD_tail, df_minute240_MED_tail, df_minute240_AAVE_tail,
+                            df_minute240_XTZ_tail, df_minute240_TON_tail, df_minute240_IMX_tail, df_minute240_HPO_tail,
+                            df_minute240_EGLD_tail, df_minute240_HIVE_tail, df_minute240_GRS_tail, df_minute240_QKC_tail,
+                            df_minute240_STPT_tail, df_minute240_XEM_tail, df_minute240_STEEM_tail, df_minute240_ATOM_tail,
+                            df_minute240_LOOM_tail, df_minute240_1INCH_tail, df_minute240_ARK_tail, df_minute240_ZIL_tail,
+                            df_minute240_CRE_tail, df_minute240_MBL_tail, df_minute240_ALGO_tail, df_minute240_STORJ_tail,
+                            df_minute240_DKA_tail, df_minute240_XLM_tail, df_minute240_IOST_tail, df_minute240_ARDR_tail,
+                            df_minute240_CHZ_tail, df_minute240_MINA_tail, df_minute240_MANA_tail, df_minute240_KAVA_tail,
+                            df_minute240_MASK_tail, df_minute240_BLUR_tail, df_minute240_SNT_tail, df_minute240_POWR_tail,
+                            df_minute240_AXS_tail, df_minute240_DOT_tail, df_minute240_MTL_tail, df_minute240_ONT_tail,
+                            df_minute240_GLM_tail, df_minute240_MATIC_tail, df_minute240_BSV_tail, df_minute240_EOS_tail,
+                            df_minute240_MLK_tail, df_minute240_THETA_tail, df_minute240_TRX_tail, df_minute240_ASTR_tail,
+                            df_minute240_GAS_tail, df_minute240_WAVES_tail, df_minute240_MNT_tail, df_minute240_VET_tail,
+                            df_minute240_QTUM_tail, df_minute240_PUNDIX_tail, df_minute240_NEO_tail
+                        ], 
+                    keys=['KRW-XEC', 'KRW-CVC','KRW-POLYX','KRW-T',
+                        'KRW-SHIB','KRW-BTC','KRW-XRP','KRW-DOGE',
+                        'KRW-WAXP','KRW-CTC','KRW-ANKR','KRW-AERGO',
+                        'KRW-HIFI','KRW-SOL','KRW-STMX','KRW-ETH',
+                        "KRW-ID", "KRW-NEAR", "KRW-SC", "KRW-BORA",
+                        "KRW-PYTH", "KRW-LSK", "KRW-STX", "KRW-ETC",
+                        "KRW-APT", "KRW-MVL", "KRW-SXP", "KRW-AVAX",
+                        "KRW-BCH", "KRW-ICX", "KRW-SEI", "KRW-ONG",
+                        "KRW-BTG", "KRW-ORBS", "KRW-ZRX", "KRW-GMT",
+                        "KRW-HUNT", "KRW-IOTA", "KRW-IQ", "KRW-STRAX",
+                        "KRW-CELO", "KRW-ARB", "KRW-BTT", "KRW-HBAR",
+                        "KRW-LINK", "KRW-SAND", "KRW-GRT", "KRW-FLOW",
+                        "KRW-ADA", "KRW-SUI", "KRW-AQT", "KRW-CBK",
+                        "KRW-FCT2", "KRW-JST", "KRW-UPP","KRW-STRIKE",
+                        "KRW-MOC", "KRW-TFUEL","KRW-TT","KRW-KNC",
+                        "KRW-CRO", "KRW-META", "KRW-ELF", "KRW-AHT",
+                        "KRW-BAT", "KRW-SBD", "KRW-MED", "KRW-AAVE",
+                        "KRW-XTZ", "KRW-TON", "KRW-IMX", "KRW-HPO",
+                        "KRW-EGLD", "KRW-HIVE", "KRW-GRS", "KRW-QKC",
+                        "KRW-STPT", "KRW-XEM", "KRW-STEEM", "KRW-ATOM",
+                        "KRW-LOOM", "KRW-1INCH", "KRW-ARK", "KRW-ZIL",
+                        "KRW-CRE", "KRW-MBL", "KRW-ALGO", "KRW-STORJ",
+                        "KRW-DKA", "KRW-XLM", "KRW-IOST", "KRW-ARDR",
+                        "KRW-CHZ", "KRW-MINA", "KRW-MANA", "KRW-KAVA",
+                        "KRW-MASK", "KRW-BLUR", "KRW-SNT", "KRW-POWR",
+                        "KRW-AXS", "KRW-DOT", "KRW-MTL", "KRW-ONT",
+                        "KRW-GLM", "KRW-MATIC", "KRW-BSV", "KRW-EOS",
+                        "KRW-MLK", "KRW-THETA", "KRW-TRX", "KRW-ASTR",
+                        "KRW-GAS", "KRW-WAVES", "KRW-MNT", "KRW-VET",
+                        "KRW-QTUM", "KRW-PUNDIX", "KRW-NEO"
+                        ])
     #
     combined_df = combined_df.dropna(how='any', axis=0)    
     #  SMA_5 > SMA_20    
@@ -802,18 +798,11 @@ def fetch_and_prepare_data():
         combined_df_sort = combined_df_sort_TOS_STDEVALL_30_LR
         
     ###
-    # Aroon Up이 Down을 상향 돌파하면 주가의 고점이 저점보다 가까이 위치한 상태가 된 것이다. 따라서 주가가 상승 추세에 있는 것으로 해석할 수 있다. 
-    # 반대로 Aroon Down이 Up을 상향 돌파하면 주가의 저점이 고점보다 가까이 위치한 것으로 주가가 하락 추세에 있는 것으로 해석할 수 있다. 
-    #그러므로 Aroon Up이 Down을 상향 돌파하면 주가가 상승 추세로 전환될 것으로 예상해 매수하고 
-    # Aroon Down이 Up을 상향 돌파하면 주가가 하락 추세로 전환될 것으로 예상해 매도하는 전략을 사용할 수 있다.
-    # A common buying condition using the Aroon indicator is when Aroon Up crosses above Aroon Down
-    #  Assuming 'aroon_up' and 'aroon_down' are the Aroon Up and Aroon Down indicators respectively
-    combined_df_sort['aroon_cross'] = np.where(combined_df_sort['AROONU_14'] > combined_df_sort['AROOND_14'], 1, 0)
 
     # Filter the DataFrame for the buying condition
-    combined_df_sort_aroon_cross = combined_df_sort[combined_df_sort['aroon_cross'] == 1]
-    if len(combined_df_sort_aroon_cross) != 0:
-        combined_df_sort = combined_df_sort_aroon_cross
+    # combined_df_sort_aroon_cross = combined_df_sort[combined_df_sort['aroon_cross'] == 1]
+    # if len(combined_df_sort_aroon_cross) != 0:
+    #     combined_df_sort = combined_df_sort_aroon_cross
         
     ## Chande Momentum Oscillator (CMO)
     #  CMO 값이 -50 이하일 경우, 주식이 과매도 상태에 있으므로 매수 기회로 간주될 수 있습니다
@@ -862,24 +851,39 @@ def fetch_and_prepare_data():
     if len(combined_df_sort_ATRr_14) != 0:
         combined_df_sort = combined_df_sort_ATRr_14
         
-    
+
     # Keltner Channels을 사용한 매수 조건: close price가 lower band 위에 있는 경우 -> 숏 포지션
     # 
     combined_df_sort_keltner = combined_df_sort[combined_df_sort['close'] > combined_df_sort['KCLe_20_2']]
     if len(combined_df_sort_keltner) != 0:
         combined_df_sort = combined_df_sort_keltner
-           
+            
+    #df_minute240_NEO["trix_buy_signal"] 
+    combined_df_sort_trix = combined_df_sort[combined_df_sort['trix_buy_signal'] == 1]
+    if len(combined_df_sort_trix) != 0:
+        combined_df_sort = combined_df_sort_trix
 
+    # df["vortex_buy_signal"] 
+    combined_df_sort_vortex = combined_df_sort[combined_df_sort['vortex_buy_signal'] == 1]
+    if len(combined_df_sort_vortex) != 0:
+        combined_df_sort = combined_df_sort_vortex
 
-    combined_df_sort_v2 = combined_df_sort[(combined_df_sort['EMA_5'] > combined_df_sort['SMA_5'])]
+    # supertrend_buy_signal
+    combined_df_sort_super = combined_df_sort[combined_df_sort['supertrend_buy_signal'] == 1]
+    if len(combined_df_sort_super) != 0:
+        combined_df_sort = combined_df_sort_super
+
     # Donchian Channels을 사용한 매수 조건: close price가 upper band 위에 있는 경우
     # 상승 추세인 경우: 주가가 돈치안 상하선을 돌파하면 매수! 
     #하락 추세인경우 : 주가가 돈치안 하한선을 돌파하면 매수!
-    combined_df_sort_DCU_20_20 = combined_df_sort_v2[combined_df_sort_v2['close'] > combined_df_sort_v2['DCU_20_20']]
+    combined_df_sort_DCU_20_20 = combined_df_sort[combined_df_sort['close'] > combined_df_sort['DCU_20_20']]
     if len(combined_df_sort_DCU_20_20) != 0:
-        combined_df_sort_v2 = combined_df_sort_DCU_20_20
+        combined_df_sort = combined_df_sort_DCU_20_20    
+
+    combined_df_sort_v2 = combined_df_sort[(combined_df_sort['EMA_5'] > combined_df_sort['SMA_5'])]
+
     # when the current close price falls below the lower Donchian Channel (DCL_20_20), 
-    combined_df_DCL_20_20 = combined_df_sort_v2[combined_df_sort_v2['close'] < combined_df_sort_v2['DCL_20_20']]
+    combined_df_DCL_20_20 = combined_df_sort_v2[combined_df_sort_v2['close'] > combined_df_sort_v2['DCL_20_20']]
 
     if len(combined_df_DCL_20_20) != 0:
         sorted_value_df = combined_df_DCL_20_20.sort_values(by='value', ascending=True)
@@ -897,6 +901,7 @@ def fetch_and_prepare_data():
                         sorted_value_df = combined_df_sma_5_60.sort_values(by='value', ascending=True)
                     else:
                         sorted_value_df = combined_df_sma_5_20.sort_values(by='value', ascending=True)
+
 
     
     result = sorted_value_df.tail(n=1)
@@ -920,7 +925,7 @@ def get_instructions(file_path):
     except Exception as e:
         print("An error occurred while reading the file:", e)
 
-def analyze_data_with_gpt4(data_json,last_decisions,fear_and_greed,current_status):
+def analyze_data_with_gpt4(data_json,last_decisions,current_status):
     instructions_path = "autotrade_version10.md"
     try:
         instructions = get_instructions(instructions_path)
@@ -1002,11 +1007,11 @@ def make_decision_and_execute_schedule():
             data_json_v2, index_value_v2 = fetch_and_prepare_data()
             print(data_json_v2)
             last_decisions = fetch_last_decisions()
-            fear_and_greed = fetch_fear_and_greed_index(limit=7)
+            #fear_and_greed = fetch_fear_and_greed_index(limit=7)
             current_status = get_current_status(index_value_v2)
             for attempt in range(max_retries):
                 try:
-                    advice = analyze_data_with_gpt4(data_json_v2,last_decisions,fear_and_greed,current_status)
+                    advice = analyze_data_with_gpt4(data_json_v2,last_decisions,current_status)
                     decision = json.loads(advice)
                     print(decision)
                     break
@@ -1041,13 +1046,15 @@ def make_decision_and_execute_sell(index_value):
             df_minute240_index_value_tail = df_minute240_index_value.tail(n=1)
             sell_data = df_minute240_index_value_tail.to_json(orient='split')
             last_decisions = fetch_last_decisions()
-            fear_and_greed = fetch_fear_and_greed_index(limit=30)
+            #fear_and_greed = fetch_fear_and_greed_index(limit=30)
             current_status = get_current_status(index_value)
-            advice = analyze_data_with_gpt4(sell_data,last_decisions,fear_and_greed,current_status)
+            advice = analyze_data_with_gpt4(sell_data,last_decisions,current_status)
             
             decision = json.loads(advice)
             print(decision)
             percentage = decision.get('percentage', 100)
+            if isinstance(percentage, str):
+                percentage = int(percentage)
             if decision.get('decision') == "sell":
                 execute_sell(index_value,percentage)
                 index_value = None
@@ -1086,6 +1093,8 @@ if __name__ == "__main__":
 
     # 17:00에 실행되는 스케줄 설정
     schedule.every().day.at("17:00").do(make_decision_and_execute_schedule)
+    
+
 
     # 여기에 추가로 스케줄을 설정하세요
     schedule.every().day.at("21:00").do(make_decision_and_execute_schedule)
