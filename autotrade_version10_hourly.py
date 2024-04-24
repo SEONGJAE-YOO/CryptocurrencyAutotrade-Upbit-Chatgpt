@@ -736,15 +736,15 @@ def fetch_and_prepare_data():
     combined_df_sort = combined_df_sma_5_120[(combined_df_sma_5_120['EMA_10'] > combined_df_sma_5_120['SMA_10'])]
         
     # "The RSI_14 has dropped below 30, suggesting the cryptocurrency pair is currently undervalued and likely to experience a price rebound. This oversold condition presents a favorable buying opportunity, anticipating a corrective rally."})
-    combined_df_RSI_7 = combined_df_sort[combined_df_sort['RSI_7'] < 40]
+    combined_df_RSI_7 = combined_df_sort[combined_df_sort['RSI_7'] <= 30]
     if len(combined_df_RSI_7) != 0:
         combined_df_sort = combined_df_RSI_7
 
-    combined_df_RSI_14 = combined_df_sort[combined_df_sort['RSI_14'] < 40]
+    combined_df_RSI_14 = combined_df_sort[combined_df_sort['RSI_14'] <= 30]
     if len(combined_df_RSI_14) != 0:
         combined_df_sort = combined_df_RSI_14
 
-    combined_df_RSI_21 = combined_df_sort[combined_df_sort['RSI_21'] < 40]
+    combined_df_RSI_21 = combined_df_sort[combined_df_sort['RSI_21'] <= 30]
     if len(combined_df_RSI_21) != 0:
         combined_df_sort = combined_df_RSI_21    
 
@@ -926,7 +926,7 @@ def get_instructions(file_path):
         print("An error occurred while reading the file:", e)
 
 def analyze_data_with_gpt4(data_json,current_status):
-    instructions_path = "autotrade_version10.md"
+    instructions_path = "autotrade_version10_hourly.md"
     try:
         instructions = get_instructions(instructions_path)
         if not instructions:
@@ -1044,20 +1044,25 @@ def make_decision_and_execute_sell(index_value):
             df_minute60_index_value = pyupbit.get_ohlcv(index_value, interval="minute60",count=120)
             df_minute60_index_value = add_indicators_version4(df_minute60_index_value)
             df_minute60_index_value_tail = df_minute60_index_value.tail(n=1)
-            sell_data = df_minute60_index_value_tail.to_json(orient='split')
-            #last_decisions = fetch_last_decisions()
-            #fear_and_greed = fetch_fear_and_greed_index(limit=30)
-            current_status = get_current_status(index_value)
-            advice = analyze_data_with_gpt4(sell_data,current_status)
+            # 매도 기법 
+            # Upper_Band < close
             
-            decision = json.loads(advice)
-            print(decision)
-            
-            if decision.get('decision') == "sell":
+            # df_sell_data 
+            if df_minute60_index_value_tail['Upper_Band'] < df_minute60_index_value_tail['close']:
                 execute_sell(index_value)
                 index_value = None
-                return index_value
-            save_decision_to_db(decision, current_status)
+            elif df_minute60_index_value_tail['RSI_7'] >= 70:
+                execute_sell(index_value)
+                index_value = None
+            elif df_minute60_index_value_tail['RSI_14'] >= 70:
+                execute_sell(index_value)
+                index_value = None
+            else:
+                print("No sell signal detected.")
+                
+            
+        
+            
     except Exception as e:
         print(f"Failed to parse the advice as JSON: {e}")
 
