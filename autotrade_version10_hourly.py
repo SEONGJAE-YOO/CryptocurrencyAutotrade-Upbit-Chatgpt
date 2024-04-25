@@ -1048,13 +1048,13 @@ def make_decision_and_execute_sell(index_value):
             # Upper_Band < close
             
             # df_sell_data 
-            if df_minute60_index_value_tail['Upper_Band'] < df_minute60_index_value_tail['close']:
+            if (df_minute60_index_value_tail['Upper_Band'] < df_minute60_index_value_tail['close']).any():
                 execute_sell(index_value)
                 index_value = None
-            elif df_minute60_index_value_tail['RSI_7'] >= 70:
+            elif (df_minute60_index_value_tail['RSI_7'] >= 70).any():
                 execute_sell(index_value)
                 index_value = None
-            elif df_minute60_index_value_tail['RSI_14'] >= 70:
+            elif (df_minute60_index_value_tail['RSI_14'] >= 70).any():
                 execute_sell(index_value)
                 index_value = None
             else:
